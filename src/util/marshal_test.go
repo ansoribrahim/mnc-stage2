@@ -73,8 +73,8 @@ func TestBindingFromContext(t *testing.T) {
 		patcher = gomonkey.NewPatches()
 	)
 
-	ctx = context.WithValue(ctx, "id", mockUUID)              //nolint
-	ctx = context.WithValue(ctx, "name", "bagas kertenagera") //nolint
+	ctx = context.WithValue(ctx, "id", mockUUID)   //nolint
+	ctx = context.WithValue(ctx, "name", "ansari") //nolint
 
 	type testStruct struct {
 		ID   uuid.UUID
@@ -109,7 +109,7 @@ func TestBindingFromContext(t *testing.T) {
 			},
 			want: &testStruct{
 				ID:   mockUUID,
-				Name: "bagas kertenagera",
+				Name: "ansari",
 			},
 			wantErr: nil,
 		},
@@ -192,8 +192,8 @@ func TestDumpIncomingContext(t *testing.T) {
 		mockUUID = uuid.New()
 	)
 
-	ctx = context.WithValue(ctx, "id", mockUUID)              //nolint
-	ctx = context.WithValue(ctx, "name", "bagas kertenagera") //nolint
+	ctx = context.WithValue(ctx, "id", mockUUID)   //nolint
+	ctx = context.WithValue(ctx, "name", "ansari") //nolint
 
 	type testStruct struct {
 		ID   uuid.UUID
@@ -215,7 +215,7 @@ func TestDumpIncomingContext(t *testing.T) {
 				ctx:  ctx,
 				keys: []string{"id", "name"},
 			},
-			want: fmt.Sprintf(`{"ID":"%s","Name":"bagas kertenagera"}`, mockUUID.String()),
+			want: fmt.Sprintf(`{"ID":"%s","Name":"ansari"}`, mockUUID.String()),
 		},
 	}
 	for _, tt := range tests {

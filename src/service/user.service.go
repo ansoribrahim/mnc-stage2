@@ -22,6 +22,7 @@ type UserService interface {
 	TopUp(ctx context.Context, userID string, amount decimal.Decimal) (*data.TopUpResponse, error)
 	Payment(ctx context.Context, userID string, req data.PaymentReq) (*data.PaymentResponse, error)
 	Transfer(ctx context.Context, userID string, req data.TransferReq) (*data.TransferResponse, error)
+	TransactionReports(ctx context.Context, userID string) (*data.TransactionResponse, error)
 }
 
 type userService struct {
@@ -312,6 +313,21 @@ func (s *userService) Transfer(ctx context.Context, userID string, req data.Tran
 			BalanceAfter:  transaction.BalanceAfter,
 			CreatedDate:   transaction.CreatedAt.String(),
 		},
+		Message: nil,
+	}, nil
+}
+
+func (s *userService) TransactionReports(ctx context.Context, userID string) (*data.TransactionResponse, error) {
+	var err error
+
+	transactions, err := s.transactionRepo.GetTransactionsByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &data.TransactionResponse{
+		Status:  "SUCCESS",
+		Result:  transactions,
 		Message: nil,
 	}, nil
 }

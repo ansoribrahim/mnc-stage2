@@ -27,5 +27,5 @@ func RegisterRoutes(r *gin.Engine, userController *handler.UserHandler) {
 	r.POST("/topup", userController.TopUp)
 	r.POST("/pay", userController.Payment)
 	r.POST("/transfer", userController.Payment)
-	r.POST("/transaction", userController.Payment)
+	r.GET("/transactions", userController.TransactionReports)
 }

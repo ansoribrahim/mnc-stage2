@@ -174,12 +174,6 @@ func (uc *UserHandler) Transfer(c *gin.Context) {
 }
 
 func (uc *UserHandler) TransactionReports(c *gin.Context) {
-	var req data.TopUpReq
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": "FAILED", "message": "Invalid input"})
-		return
-	}
-
 	token := c.GetHeader("Authorization")
 	if token == "" {
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "FAILED", "message": "Unauthenticated"})
@@ -193,7 +187,7 @@ func (uc *UserHandler) TransactionReports(c *gin.Context) {
 	}
 
 	ctx := context.Background()
-	topUpResp, err := uc.userService.TopUp(ctx, claims.UserID, decimal.NewFromInt(req.Amount))
+	topUpResp, err := uc.userService.TransactionReports(ctx, claims.UserID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "FAILED", "message": "Internal server error"})
 		return

@@ -76,3 +76,9 @@ type TransferRsp struct {
 	BalanceAfter  decimal.Decimal `json:"balance_after"`
 	CreatedDate   string          `json:"created_date"`
 }
+
+type TransactionResponse struct {
+	Status  string        `json:"status"`
+	Result  []Transaction `json:"result,omitempty"`
+	Message *string       `json:"message,omitempty"`
+}

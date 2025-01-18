@@ -96,6 +96,21 @@ func (mr *MockUserServiceMockRecorder) TopUp(ctx, userID, amount interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TopUp", reflect.TypeOf((*MockUserService)(nil).TopUp), ctx, userID, amount)
 }
 
+// TransactionReports mocks base method.
+func (m *MockUserService) TransactionReports(ctx context.Context, userID string) (*data.TransactionResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "TransactionReports", ctx, userID)
+	ret0, _ := ret[0].(*data.TransactionResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// TransactionReports indicates an expected call of TransactionReports.
+func (mr *MockUserServiceMockRecorder) TransactionReports(ctx, userID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TransactionReports", reflect.TypeOf((*MockUserService)(nil).TransactionReports), ctx, userID)
+}
+
 // Transfer mocks base method.
 func (m *MockUserService) Transfer(ctx context.Context, userID string, req data.TransferReq) (*data.TransferResponse, error) {
 	m.ctrl.T.Helper()

@@ -26,17 +26,17 @@ func (User) TableName() string {
 }
 
 type Transaction struct {
-	ID            uuid.UUID `json:"transaction_id" gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
-	UserID        uuid.UUID
-	Type          string
-	Amount        decimal.Decimal
-	BalanceBefore decimal.Decimal
-	BalanceAfter  decimal.Decimal
-	Remarks       string
-	Status        string
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
-	DeletedAt     *time.Time
+	ID            uuid.UUID       `json:"transaction_id" gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
+	UserID        uuid.UUID       `json:"user_id"`
+	Type          string          `json:"type"`
+	Amount        decimal.Decimal `json:"amount"`
+	BalanceBefore decimal.Decimal `json:"balance_before"`
+	BalanceAfter  decimal.Decimal `json:"balance_after"`
+	Remarks       string          `json:"remarks"`
+	Status        string          `json:"status"`
+	CreatedAt     time.Time       `json:"created_date"`
+	UpdatedAt     time.Time       `json:"-"`
+	DeletedAt     *time.Time      `json:"-"`
 }
 
 func (Transaction) TableName() string {
