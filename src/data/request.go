@@ -12,3 +12,17 @@ type LoginReq struct {
 	PhoneNumber string `json:"phone_number" binding:"required"`
 	Pin         string `json:"pin" binding:"required,max=6,min=6"`
 }
+
+type TopUpReq struct {
+	Amount int64 `json:"amount"`
+}
+
+type PaymentReq struct {
+	Amount  int64  `json:"amount"`
+	Remarks string `json:"remarks"`
+}
+
+type TransferReq struct {
+	Amount  int64  `json:"amount"`
+	Remarks string `json:"remarks"`
+}

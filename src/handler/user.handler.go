@@ -5,11 +5,13 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/shopspring/decimal"
 
 	"github.com/guregu/null"
 
 	"mnc-stage2/src/data"
 	"mnc-stage2/src/service"
+	"mnc-stage2/src/util"
 )
 
 type UserHandler struct {
@@ -82,4 +84,120 @@ func (uc *UserHandler) Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, resp)
+}
+
+func (uc *UserHandler) TopUp(c *gin.Context) {
+	var req data.TopUpReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "FAILED", "message": "Invalid input"})
+		return
+	}
+
+	token := c.GetHeader("Authorization")
+	if token == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "FAILED", "message": "Unauthenticated"})
+		return
+	}
+
+	claims, err := util.GetClaims(token)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "FAILED", "message": "Unauthenticated"})
+		return
+	}
+
+	ctx := context.Background()
+	topUpResp, err := uc.userService.TopUp(ctx, claims.UserID, decimal.NewFromInt(req.Amount))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": "FAILED", "message": "Internal server error"})
+		return
+	}
+
+	c.JSON(http.StatusOK, topUpResp)
+}
+
+func (uc *UserHandler) Payment(c *gin.Context) {
+	var req data.PaymentReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "FAILED", "message": "Invalid input"})
+		return
+	}
+
+	token := c.GetHeader("Authorization")
+	if token == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "FAILED", "message": "Unauthenticated"})
+		return
+	}
+
+	claims, err := util.GetClaims(token)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "FAILED", "message": "Unauthenticated"})
+		return
+	}
+
+	ctx := context.Background()
+	payResp, err := uc.userService.Payment(ctx, claims.UserID, req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": "FAILED", "message": "Internal server error"})
+		return
+	}
+
+	c.JSON(http.StatusOK, payResp)
+}
+
+func (uc *UserHandler) Transfer(c *gin.Context) {
+	var req data.TransferReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "FAILED", "message": "Invalid input"})
+		return
+	}
+
+	token := c.GetHeader("Authorization")
+	if token == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "FAILED", "message": "Unauthenticated"})
+		return
+	}
+
+	claims, err := util.GetClaims(token)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "FAILED", "message": "Unauthenticated"})
+		return
+	}
+
+	ctx := context.Background()
+	trfResp, err := uc.userService.Transfer(ctx, claims.UserID, req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": "FAILED", "message": "Internal server error"})
+		return
+	}
+
+	c.JSON(http.StatusOK, trfResp)
+}
+
+func (uc *UserHandler) TransactionReports(c *gin.Context) {
+	var req data.TopUpReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "FAILED", "message": "Invalid input"})
+		return
+	}
+
+	token := c.GetHeader("Authorization")
+	if token == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "FAILED", "message": "Unauthenticated"})
+		return
+	}
+
+	claims, err := util.GetClaims(token)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "FAILED", "message": "Unauthenticated"})
+		return
+	}
+
+	ctx := context.Background()
+	topUpResp, err := uc.userService.TopUp(ctx, claims.UserID, decimal.NewFromInt(req.Amount))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": "FAILED", "message": "Internal server error"})
+		return
+	}
+
+	c.JSON(http.StatusOK, topUpResp)
 }

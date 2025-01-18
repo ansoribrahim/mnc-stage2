@@ -10,6 +10,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
+	decimal "github.com/shopspring/decimal"
 )
 
 // MockUserService is a mock of UserService interface.
@@ -50,6 +51,21 @@ func (mr *MockUserServiceMockRecorder) Login(ctx, phoneNumber, pin interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Login", reflect.TypeOf((*MockUserService)(nil).Login), ctx, phoneNumber, pin)
 }
 
+// Payment mocks base method.
+func (m *MockUserService) Payment(ctx context.Context, userID string, req data.PaymentReq) (*data.PaymentResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Payment", ctx, userID, req)
+	ret0, _ := ret[0].(*data.PaymentResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Payment indicates an expected call of Payment.
+func (mr *MockUserServiceMockRecorder) Payment(ctx, userID, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Payment", reflect.TypeOf((*MockUserService)(nil).Payment), ctx, userID, req)
+}
+
 // RegisterUser mocks base method.
 func (m *MockUserService) RegisterUser(ctx context.Context, firstName, lastName, phoneNumber, address, pin string) (*data.User, error) {
 	m.ctrl.T.Helper()
@@ -63,4 +79,34 @@ func (m *MockUserService) RegisterUser(ctx context.Context, firstName, lastName,
 func (mr *MockUserServiceMockRecorder) RegisterUser(ctx, firstName, lastName, phoneNumber, address, pin interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterUser", reflect.TypeOf((*MockUserService)(nil).RegisterUser), ctx, firstName, lastName, phoneNumber, address, pin)
+}
+
+// TopUp mocks base method.
+func (m *MockUserService) TopUp(ctx context.Context, userID string, amount decimal.Decimal) (*data.TopUpResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "TopUp", ctx, userID, amount)
+	ret0, _ := ret[0].(*data.TopUpResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// TopUp indicates an expected call of TopUp.
+func (mr *MockUserServiceMockRecorder) TopUp(ctx, userID, amount interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TopUp", reflect.TypeOf((*MockUserService)(nil).TopUp), ctx, userID, amount)
+}
+
+// Transfer mocks base method.
+func (m *MockUserService) Transfer(ctx context.Context, userID string, req data.TransferReq) (*data.TransferResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Transfer", ctx, userID, req)
+	ret0, _ := ret[0].(*data.TransferResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Transfer indicates an expected call of Transfer.
+func (mr *MockUserServiceMockRecorder) Transfer(ctx, userID, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Transfer", reflect.TypeOf((*MockUserService)(nil).Transfer), ctx, userID, req)
 }

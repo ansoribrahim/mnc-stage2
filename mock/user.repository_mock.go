@@ -35,18 +35,19 @@ func (m *MockUserRepository) EXPECT() *MockUserRepositoryMockRecorder {
 	return m.recorder
 }
 
-// CreateUser mocks base method.
-func (m *MockUserRepository) CreateUser(ctx context.Context, user *data.User) error {
+// GetUserByID mocks base method.
+func (m *MockUserRepository) GetUserByID(ctx context.Context, userID string, lock bool) (*data.User, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateUser", ctx, user)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret := m.ctrl.Call(m, "GetUserByID", ctx, userID, lock)
+	ret0, _ := ret[0].(*data.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
-// CreateUser indicates an expected call of CreateUser.
-func (mr *MockUserRepositoryMockRecorder) CreateUser(ctx, user interface{}) *gomock.Call {
+// GetUserByID indicates an expected call of GetUserByID.
+func (mr *MockUserRepositoryMockRecorder) GetUserByID(ctx, userID, lock interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockUserRepository)(nil).CreateUser), ctx, user)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByID", reflect.TypeOf((*MockUserRepository)(nil).GetUserByID), ctx, userID, lock)
 }
 
 // GetUserByPhoneNumber mocks base method.
@@ -62,4 +63,18 @@ func (m *MockUserRepository) GetUserByPhoneNumber(ctx context.Context, userID st
 func (mr *MockUserRepositoryMockRecorder) GetUserByPhoneNumber(ctx, userID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByPhoneNumber", reflect.TypeOf((*MockUserRepository)(nil).GetUserByPhoneNumber), ctx, userID)
+}
+
+// UpsertUser mocks base method.
+func (m *MockUserRepository) UpsertUser(ctx context.Context, user *data.User) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpsertUser", ctx, user)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpsertUser indicates an expected call of UpsertUser.
+func (mr *MockUserRepositoryMockRecorder) UpsertUser(ctx, user interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpsertUser", reflect.TypeOf((*MockUserRepository)(nil).UpsertUser), ctx, user)
 }
