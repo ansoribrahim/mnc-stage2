@@ -9,10 +9,12 @@ import (
 
 	"mnc-stage2/src/data"
 	"mnc-stage2/src/repository"
+	"mnc-stage2/src/util"
 )
 
 type UserService interface {
 	RegisterUser(ctx context.Context, firstName, lastName, phoneNumber, address, pin string) (*data.User, error)
+	Login(ctx context.Context, phoneNumber, pin string) (*data.LoginResponse, error)
 }
 
 type userService struct {
@@ -32,6 +34,11 @@ func (s *userService) RegisterUser(ctx context.Context, firstName, lastName, pho
 		return nil, fmt.Errorf("phone number already registered")
 	}
 
+	hashedPin, err := util.HashPin(pin)
+	if err != nil {
+		return nil, fmt.Errorf("failed to hash PIN: %v", err)
+	}
+
 	userID := uuid.New()
 	user := &data.User{
 		ID:          userID,
@@ -39,7 +46,7 @@ func (s *userService) RegisterUser(ctx context.Context, firstName, lastName, pho
 		LastName:    lastName,
 		PhoneNumber: phoneNumber,
 		Address:     address,
-		Pin:         pin,
+		Pin:         hashedPin,
 		CreatedAt:   time.Now(),
 	}
 
@@ -49,4 +56,52 @@ func (s *userService) RegisterUser(ctx context.Context, firstName, lastName, pho
 	}
 
 	return user, nil
+}
+
+func (s *userService) Login(ctx context.Context, phoneNumber, pin string) (*data.LoginResponse, error) {
+	user, err := s.userRepo.GetUserByPhoneNumber(ctx, phoneNumber)
+	if err != nil || user == nil {
+		msg := "invalid credentials"
+		return &data.LoginResponse{
+			Status:  "error",
+			Message: &msg,
+		}, nil
+	}
+
+	// Verify PIN
+	if !util.VerifyPin(user.Pin, pin) {
+		msg := "invalid credentials"
+		return &data.LoginResponse{
+			Status:  "error",
+			Message: &msg,
+		}, nil
+	}
+
+	// Generate tokens
+	accessToken, err := util.GenerateAccessToken(user.ID.String())
+	if err != nil {
+		msg := "failed to generate access token"
+		return &data.LoginResponse{
+			Status:  "error",
+			Message: &msg,
+		}, nil
+	}
+
+	refreshToken, err := util.GenerateRefreshToken(user.ID.String())
+	if err != nil {
+		msg := "failed to generate refresh token"
+		return &data.LoginResponse{
+			Status:  "error",
+			Message: &msg,
+		}, nil
+	}
+
+	// Create response
+	return &data.LoginResponse{
+		Status: "success",
+		Result: &data.LoginRsp{
+			AccessToken:  accessToken,
+			RefreshToken: refreshToken,
+		},
+	}, nil
 }

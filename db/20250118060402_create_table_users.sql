@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users(
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR (255) NOT NULL,
     phone_number VARCHAR (15) NOT NULL UNIQUE,
-    pin VARCHAR(6) NOT NULL,
+    pin VARCHAR(1000) NOT NULL,
     address TEXT,
     created_at timestamp WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,

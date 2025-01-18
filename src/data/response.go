@@ -20,3 +20,14 @@ type UserResponse struct {
 	Address     string    `json:"address"`
 	CreatedAt   time.Time `json:"created_date"`
 }
+
+type LoginResponse struct {
+	Status  string    `json:"status"`
+	Result  *LoginRsp `json:"result,omitempty"`
+	Message *string   `json:"message,omitempty"`
+}
+
+type LoginRsp struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+}

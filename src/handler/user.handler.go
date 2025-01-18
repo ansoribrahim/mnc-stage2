@@ -65,3 +65,21 @@ func (uc *UserHandler) RegisterUser(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+func (uc *UserHandler) Login(c *gin.Context) {
+	var req data.LoginReq
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "FAILED", "message": "Invalid input"})
+		return
+	}
+
+	ctx := context.Background()
+	resp, err := uc.userService.Login(ctx, req.PhoneNumber, req.Pin)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "FAILED", "message": "Phone Number and PIN doesn’t match."})
+		return
+	}
+
+	c.JSON(http.StatusOK, resp)
+}
