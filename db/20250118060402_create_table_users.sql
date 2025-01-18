@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users(
     phone_number VARCHAR (15) NOT NULL UNIQUE,
     pin VARCHAR(1000) NOT NULL,
     address TEXT,
+    balance DECIMAL(10, 2) NOT NULL DEFAULT 0,
     created_at timestamp WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at timestamp WITH TIME ZONE,
