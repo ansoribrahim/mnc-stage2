@@ -3,4 +3,4 @@
 ## Commit history
 ![img.png](img.png)
 
-live demo: aws
+i build db rds free tier for this, so feel free to use it.
